@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class PaymentService {
   constructor() {}
 
-  create(): { message: string } {
+  create(body: any): { message: string } {
     return {
       message: 'Hello world',
     };
