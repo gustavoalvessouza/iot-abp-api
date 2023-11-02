@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model vendingMachines {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name     String
+  location String
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  conveyors vendingMachinesConveyors[]
+}
+
+model vendingMachinesConveyors {
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  vendingMachineId String? @db.ObjectId
+
+  espId String @unique
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  vendingMachine vendingMachines? @relation(fields: [vendingMachineId], references: [id], onDelete: Cascade)
+}

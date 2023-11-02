@@ -1,0 +1,1 @@
+export * from './vendingMachines.repository';
