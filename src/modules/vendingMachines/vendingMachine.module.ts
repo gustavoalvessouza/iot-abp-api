@@ -3,7 +3,13 @@ import { VendingMachineController } from './vendingMachine.controller';
 import { VendingMachineRepository } from 'src/repositories/vendingMachines';
 import { PrismaService } from 'src/database/prisma.service';
 import { HandleErrors } from 'src/utils/HandleErrors';
-import { CreateVendingMachineUseCase, UpdateVendingMachineUseCase } from './use-case';
+
+import {
+  CreateVendingMachineUseCase,
+  UpdateVendingMachineUseCase,
+  DeleteVendingMachineUseCase,
+  FindAllVendingMachineUseCase,
+} from './use-case';
 
 @Module({
   imports: [],
@@ -11,8 +17,10 @@ import { CreateVendingMachineUseCase, UpdateVendingMachineUseCase } from './use-
     HandleErrors,
     PrismaService,
     VendingMachineRepository,
-    UpdateVendingMachineUseCase,
     CreateVendingMachineUseCase,
+    UpdateVendingMachineUseCase,
+    FindAllVendingMachineUseCase,
+    DeleteVendingMachineUseCase,
   ],
   exports: [],
   controllers: [VendingMachineController],

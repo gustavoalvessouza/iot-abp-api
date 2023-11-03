@@ -1,6 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
-import { CreateVendingMachineDTO, UpdateVendingMachineDTO } from 'src/modules/vendingMachines/dto';
+import {
+  CreateVendingMachineDTO,
+  FindAllVendingMachineDTO,
+  UpdateVendingMachineDTO,
+} from 'src/modules/vendingMachines/dto';
 
 @Injectable()
 export class VendingMachineRepository {
@@ -38,6 +42,31 @@ export class VendingMachineRepository {
               not: machineId,
             }
           : undefined,
+      },
+    });
+  }
+
+  async findAll({ page, take }: FindAllVendingMachineDTO) {
+    const [vendingMachines, count] = await this.prisma.$transaction([
+      this.prisma.vendingMachines.findMany({
+        take: Number(take),
+        skip: (Number(page) - 1) * Number(take),
+      }),
+      this.prisma.vendingMachines.count(),
+    ]);
+
+    return {
+      vendingMachines,
+      count,
+    };
+
+    return;
+  }
+
+  async deleteById(id: string) {
+    return this.prisma.vendingMachines.delete({
+      where: {
+        id,
       },
     });
   }
