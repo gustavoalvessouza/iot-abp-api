@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//#region VENDING MACHINES
 model vendingMachines {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
@@ -16,17 +17,57 @@ model vendingMachines {
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
-  conveyors vendingMachinesConveyors[]
+  conveyors    vendingMachinesConveyors[]
+  productSales productSalesHistory[]
 }
 
 model vendingMachinesConveyors {
   id               String  @id @default(auto()) @map("_id") @db.ObjectId
   vendingMachineId String? @db.ObjectId
+  productId        String? @db.ObjectId
+  espIp            String  @unique
 
-  espId String @unique
+  amount Int @default(0)
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
   vendingMachine vendingMachines? @relation(fields: [vendingMachineId], references: [id], onDelete: Cascade)
+
+  product products? @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
+
+//#endregion
+
+//#region PRODUCTS
+model products {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name        String
+  description String
+  price       Float
+  image       String
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  vendingMachinesConveyors vendingMachinesConveyors[]
+  sales                    productSalesHistory[]
+}
+
+model productSalesHistory {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  productId        String? @db.ObjectId
+  vendingMachineId String? @db.ObjectId
+
+  amount Int
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  products        products?        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  vendingMachines vendingMachines? @relation(fields: [vendingMachineId], references: [id], onDelete: Cascade)
+}
+
+//#endregion
