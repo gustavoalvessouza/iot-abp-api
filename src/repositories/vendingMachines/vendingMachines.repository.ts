@@ -1,20 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
-import { Prisma } from '@prisma/client';
+import { CreateVendingMachineDTO, UpdateVendingMachineDTO } from 'src/modules/vendingMachines/dto';
 
 @Injectable()
 export class VendingMachineRepository {
-  constructor(private prisma: PrismaService) {}
+  //#region DEPENDENCIES
+  @Inject(PrismaService) private prisma: PrismaService;
+  //#endregion
 
-  async create(args: Prisma.vendingMachinesCreateArgs) {
+  async create(args: CreateVendingMachineDTO) {
     return this.prisma.vendingMachines.create(args);
   }
 
-  async update(args: Prisma.vendingMachinesUpdateArgs) {
-    return this.prisma.vendingMachines.update(args);
+  async update({ machineId, data }: UpdateVendingMachineDTO) {
+    return this.prisma.vendingMachines.update({
+      data,
+      where: {
+        id: machineId,
+      },
+    });
   }
 
-  async find(args: Prisma.vendingMachinesFindFirstArgs) {
-    return this.prisma.vendingMachines.findFirst(args);
+  async findById(id: string) {
+    return this.prisma.vendingMachines.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async findByName(name: string, machineId?: string) {
+    return this.prisma.vendingMachines.findFirst({
+      where: {
+        name,
+        id: machineId
+          ? {
+              not: machineId,
+            }
+          : undefined,
+      },
+    });
   }
 }

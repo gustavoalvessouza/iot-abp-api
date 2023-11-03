@@ -1,40 +1,22 @@
-import {
-  Controller,
-  Inject,
-  Post,
-  Put,
-  Body,
-  Response,
-  Res,
-  HttpStatus,
-  HttpException,
-} from '@nestjs/common';
-import { VendingMachineService } from './vendingMachine.service';
-import {
-  CreateVendingMachineDTO,
-  UpdateVendingMachineDTO,
-} from './domain/dto/vendingMachine.dto';
+import { Controller, Inject, Put, Body, Post } from '@nestjs/common';
+import { CreateVendingMachineDTO, UpdateVendingMachineDTO } from './dto';
+import { UpdateVendingMachineUseCase, CreateVendingMachineUseCase } from './use-case';
 
 @Controller('vending-machines')
 export class VendingMachineController {
-  constructor(
-    @Inject(VendingMachineService) private service: VendingMachineService,
-  ) {}
+  //#region DEPENDENCIES
+  @Inject(UpdateVendingMachineUseCase) private updateUseCase: UpdateVendingMachineUseCase;
+
+  @Inject(CreateVendingMachineUseCase) private createUserCase: CreateVendingMachineUseCase;
+  //#endregion
 
   @Post()
   async create(@Body() body: CreateVendingMachineDTO) {
-    return this.service.create(body);
+    return this.createUserCase.execute(body);
   }
 
   @Put()
-  async update(@Res() res: Response, @Body() body: UpdateVendingMachineDTO) {
-    const { errors, result } = await this.service.update(body);
-    console.log(errors);
-
-    if (errors.length > 0) {
-      throw new HttpException({ errors }, HttpStatus.BAD_REQUEST);
-    }
-
-    return result;
+  async update(@Body() body: UpdateVendingMachineDTO) {
+    return await this.updateUseCase.execute(body);
   }
 }

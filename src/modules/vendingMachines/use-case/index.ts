@@ -1,1 +1,2 @@
-export * from './vendingMachine.use-case';
+export * from './UpdateVendingMachine.use-case';
+export * from './CreateVendingMachine.use-case';
