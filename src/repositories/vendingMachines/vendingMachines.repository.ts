@@ -4,6 +4,7 @@ import {
   CreateVendingMachineDTO,
   FindAllVendingMachineDTO,
   UpdateVendingMachineDTO,
+  DeleteVendingMachineDTO,
 } from 'src/modules/vendingMachines/dto';
 
 @Injectable()
@@ -12,8 +13,8 @@ export class VendingMachineRepository {
   @Inject(PrismaService) private prisma: PrismaService;
   //#endregion
 
-  async create(args: CreateVendingMachineDTO) {
-    return this.prisma.vendingMachines.create(args);
+  async create({ data }: CreateVendingMachineDTO) {
+    return this.prisma.vendingMachines.create({ data });
   }
 
   async update({ id, data }: UpdateVendingMachineDTO) {
@@ -63,7 +64,7 @@ export class VendingMachineRepository {
     return;
   }
 
-  async deleteById(id: string) {
+  async deleteById({ id }: DeleteVendingMachineDTO) {
     return this.prisma.vendingMachines.delete({
       where: {
         id,

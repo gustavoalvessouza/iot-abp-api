@@ -28,7 +28,7 @@ export class DeleteVendingMachineUseCase {
   }
 
   private async deleteMachine({ id }: DeleteVendingMachineDTO) {
-    await this.repository.deleteById(id);
+    await this.repository.deleteById({ id });
     return {
       message: ['Vending machine deleted successfully'],
     };
