@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { VendingMachineRepository } from 'src/repositories/vendingMachines';
+import { VendingMachineRepository } from 'src/repositories';
 
 import { HandleErrors } from 'src/utils/HandleErrors';
 import { CreateVendingMachineDTO } from '../dto';
@@ -28,9 +28,14 @@ export class CreateVendingMachineUseCase {
   }
 
   private async createMachine({ data }: CreateVendingMachineDTO) {
-    return this.repository.create({
+    const vendingMachine = await this.repository.create({
       data,
     });
+
+    return {
+      vendingMachine,
+      message: ['Vending machine created successfully'],
+    };
   }
   //#endregion
 }

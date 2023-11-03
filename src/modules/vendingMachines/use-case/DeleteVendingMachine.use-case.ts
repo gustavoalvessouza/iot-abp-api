@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { VendingMachineRepository } from 'src/repositories/vendingMachines';
+import { VendingMachineRepository } from 'src/repositories';
 
 import { HandleErrors } from 'src/utils/HandleErrors';
 import { DeleteVendingMachineDTO } from '../dto';
@@ -12,23 +12,26 @@ export class DeleteVendingMachineUseCase {
   @Inject(HandleErrors) private error: HandleErrors;
   //#endregion
 
-  async execute({ machineId }: DeleteVendingMachineDTO) {
-    await this.checkMachineExists({ machineId });
+  async execute({ id }: DeleteVendingMachineDTO) {
+    await this.checkMachineExists({ id });
 
     this.error.checkErrors();
 
-    return this.deleteMachine({ machineId });
+    return this.deleteMachine({ id });
   }
 
   //#region IMPLEMENATION
-  private async checkMachineExists({ machineId }: DeleteVendingMachineDTO) {
-    const machine = await this.repository.findById(machineId);
+  private async checkMachineExists({ id }: DeleteVendingMachineDTO) {
+    const machine = await this.repository.findById(id);
 
     if (!machine) this.error.add('Vending machine not found');
   }
 
-  private async deleteMachine({ machineId }: DeleteVendingMachineDTO) {
-    return this.repository.deleteById(machineId);
+  private async deleteMachine({ id }: DeleteVendingMachineDTO) {
+    await this.repository.deleteById(id);
+    return {
+      message: ['Vending machine deleted successfully'],
+    };
   }
   //#endregion
 }

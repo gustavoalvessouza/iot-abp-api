@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { VendingMachineRepository } from 'src/repositories';
+import { ProductRepository } from 'src/repositories';
 
 import { HandleErrors } from 'src/utils/HandleErrors';
-import { UpdateVendingMachineDTO } from '../dto';
+import { UpdateProductDTO } from '../dto';
 
 @Injectable()
-export class UpdateVendingMachineUseCase {
+export class UpdateProductUseCase {
   //#region DEPENDENCIES
-  @Inject(VendingMachineRepository) private repository: VendingMachineRepository;
+  @Inject(ProductRepository) private repository: ProductRepository;
 
   @Inject(HandleErrors) private error: HandleErrors;
   //#endregion
 
-  async execute({ id, data }: UpdateVendingMachineDTO) {
+  async execute({ id, data }: UpdateProductDTO) {
     await this.checkMachineExists({ id, data });
     await this.checkMachineNameHasUsed({ id, data });
 
@@ -22,22 +22,22 @@ export class UpdateVendingMachineUseCase {
   }
 
   //#region IMPLEMENATION
-  private async checkMachineExists({ id }: UpdateVendingMachineDTO) {
+  private async checkMachineExists({ id }: UpdateProductDTO) {
     const machine = await this.repository.findById(id);
 
     if (!machine) this.error.add('Vending machine not found');
   }
 
-  private async checkMachineNameHasUsed({ id, data }: UpdateVendingMachineDTO) {
+  private async checkMachineNameHasUsed({ id, data }: UpdateProductDTO) {
     const machine = await this.repository.findByName(data.name, id);
 
     if (machine) this.error.add('Already exists a vending machine with this name');
   }
 
-  private async updateMachine(args: UpdateVendingMachineDTO) {
-    const vendingMachine = await this.repository.update(args);
+  private async updateMachine(args: UpdateProductDTO) {
+    const product = await this.repository.update(args);
     return {
-      vendingMachine,
+      product,
       message: ['Vending machine updated successfully'],
     };
   }

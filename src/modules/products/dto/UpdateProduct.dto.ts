@@ -1,14 +1,14 @@
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsObject, IsString, ValidateNested } from 'class-validator';
-import { DataVendingMachineDTO } from './DataVendingmachine.dto';
+import { DataProductDTO } from './DataProduct.dto';
 
-export class UpdateVendingMachineDTO {
+export class UpdateProductDTO {
   @IsString()
   @IsNotEmpty()
   id: string;
 
   @IsObject()
   @ValidateNested()
-  @Type(() => DataVendingMachineDTO)
-  data: DataVendingMachineDTO;
+  @Type(() => DataProductDTO)
+  data: DataProductDTO;
 }

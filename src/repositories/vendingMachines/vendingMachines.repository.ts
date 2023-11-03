@@ -16,11 +16,11 @@ export class VendingMachineRepository {
     return this.prisma.vendingMachines.create(args);
   }
 
-  async update({ machineId, data }: UpdateVendingMachineDTO) {
+  async update({ id, data }: UpdateVendingMachineDTO) {
     return this.prisma.vendingMachines.update({
       data,
       where: {
-        id: machineId,
+        id,
       },
     });
   }

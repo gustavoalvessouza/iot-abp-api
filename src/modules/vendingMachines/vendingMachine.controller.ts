@@ -41,9 +41,8 @@ export class VendingMachineController {
     return await this.findAllUseCase.execute(query);
   }
 
-  @Delete(':machineId')
+  @Delete(':id')
   async delete(@Param() params: DeleteVendingMachineDTO) {
-    console.log(params);
     return await this.deleteUseCase.execute(params);
   }
 }

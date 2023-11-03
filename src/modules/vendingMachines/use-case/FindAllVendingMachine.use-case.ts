@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { VendingMachineRepository } from 'src/repositories/vendingMachines';
+import { VendingMachineRepository } from 'src/repositories';
 
 import { FindAllVendingMachineDTO } from '../dto';
 
