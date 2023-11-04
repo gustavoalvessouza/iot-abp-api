@@ -1,16 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
-import { Prisma, vendingMachines } from '@prisma/client';
+import {
+  CreateVendingMachineDTO,
+  FindAllVendingMachineDTO,
+  UpdateVendingMachineDTO,
+  DeleteVendingMachineDTO,
+} from 'src/modules/vendingMachines/dto';
 
 @Injectable()
 export class VendingMachineRepository {
-  constructor(private prisma: PrismaService) {}
+  //#region DEPENDENCIES
+  @Inject(PrismaService) private prisma: PrismaService;
+  //#endregion
 
-  async create(
-    data: Prisma.vendingMachinesCreateInput,
-  ): Promise<vendingMachines> {
-    return this.prisma.vendingMachines.create({
+  async create({ data }: CreateVendingMachineDTO) {
+    return this.prisma.vendingMachines.create({ data });
+  }
+
+  async update({ id, data }: UpdateVendingMachineDTO) {
+    return this.prisma.vendingMachines.update({
       data,
+      where: {
+        id,
+      },
+    });
+  }
+
+  async findById(id: string) {
+    return this.prisma.vendingMachines.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async findByName(name: string, machineId?: string) {
+    return this.prisma.vendingMachines.findFirst({
+      where: {
+        name,
+        id: machineId
+          ? {
+              not: machineId,
+            }
+          : undefined,
+      },
+    });
+  }
+
+  async findAll({ page, take }: FindAllVendingMachineDTO) {
+    const [vendingMachines, count] = await this.prisma.$transaction([
+      this.prisma.vendingMachines.findMany({
+        take: Number(take),
+        skip: (Number(page) - 1) * Number(take),
+      }),
+      this.prisma.vendingMachines.count(),
+    ]);
+
+    return {
+      vendingMachines,
+      count,
+    };
+
+    return;
+  }
+
+  async deleteById({ id }: DeleteVendingMachineDTO) {
+    return this.prisma.vendingMachines.delete({
+      where: {
+        id,
+      },
     });
   }
 }

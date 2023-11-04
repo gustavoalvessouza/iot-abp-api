@@ -1,12 +1,27 @@
 import { Module } from '@nestjs/common';
 import { VendingMachineController } from './vendingMachine.controller';
-import { VendingMachineService } from './vendingMachine.service';
-import { VendingMachineRepository } from 'src/repositories/vendingMachines';
+import { VendingMachineRepository } from 'src/repositories';
 import { PrismaService } from 'src/database/prisma.service';
+import { HandleErrors } from 'src/utils/HandleErrors';
+
+import {
+  CreateVendingMachineUseCase,
+  UpdateVendingMachineUseCase,
+  DeleteVendingMachineUseCase,
+  FindAllVendingMachineUseCase,
+} from './use-case';
 
 @Module({
   imports: [],
-  providers: [VendingMachineService, VendingMachineRepository, PrismaService],
+  providers: [
+    HandleErrors,
+    PrismaService,
+    VendingMachineRepository,
+    CreateVendingMachineUseCase,
+    UpdateVendingMachineUseCase,
+    FindAllVendingMachineUseCase,
+    DeleteVendingMachineUseCase,
+  ],
   exports: [],
   controllers: [VendingMachineController],
 })
