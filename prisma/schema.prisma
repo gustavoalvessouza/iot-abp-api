@@ -22,10 +22,10 @@ model vendingMachines {
 }
 
 model vendingMachinesConveyors {
-  id               String @id @default(auto()) @map("_id") @db.ObjectId
-  vendingMachineId String @db.ObjectId
-  productId        String @db.ObjectId
-  espIp            String @unique
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  vendingMachineId String  @db.ObjectId
+  productId        String? @db.ObjectId
+  espIp            String  @unique
 
   amount Int @default(0)
 

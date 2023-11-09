@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
-import { VendingMachineController } from './vendingMachineConveyors.controller';
+import { VendingMachineConveyorsController } from './vendingMachineConveyors.controller';
 import { VendingMachineRepository, ProductRepository, VendingMachineConveyorsRepository } from 'src/repositories';
 import { PrismaService } from 'src/database/prisma.service';
-import { HandleErrors } from 'src/utils/HandleErrors';
+import { HandleErrors } from 'src/utils/handleErrors';
 
 import {
-  CreateVendingMachineConveyorsUseCase,
-  UpdateVendingMachineConveyorsUseCase,
-  DeleteVendingMachineConveyorsUseCase,
+  CreateConveyorsUseCase,
+  AddProductUseCase,
+  DeleteConveyorsUseCase,
+  UpdateConveyorsUseCase,
+  RemoveProductUseCase,
 } from './use-case';
 
 @Module({
@@ -16,13 +18,15 @@ import {
     HandleErrors,
     PrismaService,
     VendingMachineRepository,
-    ProductRepository,
     VendingMachineConveyorsRepository,
-    CreateVendingMachineConveyorsUseCase,
-    UpdateVendingMachineConveyorsUseCase,
-    DeleteVendingMachineConveyorsUseCase,
+    ProductRepository,
+    CreateConveyorsUseCase,
+    AddProductUseCase,
+    DeleteConveyorsUseCase,
+    UpdateConveyorsUseCase,
+    RemoveProductUseCase,
   ],
   exports: [],
-  controllers: [VendingMachineController],
+  controllers: [VendingMachineConveyorsController],
 })
 export class VendingMachineConveyorModule {}

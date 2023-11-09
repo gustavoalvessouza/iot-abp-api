@@ -1,17 +1,9 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class DataVendingMachineConveyorsDTO {
-  @IsString()
-  @IsNotEmpty()
-  vendingMachineId: string;
-
+export class DataProductConveyorsDTO {
   @IsString()
   @IsNotEmpty()
   productId: string;
-
-  @IsString()
-  @IsNotEmpty()
-  espIp: string;
 
   @IsNumber()
   @IsNotEmpty()

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ProductRepository } from 'src/repositories';
 
-import { HandleErrors } from 'src/utils/HandleErrors';
+import { HandleErrors } from 'src/utils/handleErrors';
 import { CreateProductDTO } from '../dto';
 
 @Injectable()
@@ -28,6 +28,8 @@ export class CreateProductUseCase {
   }
 
   private async createProduct({ data }: CreateProductDTO) {
+    data.price = data.price * 100;
+
     const product = await this.repository.create({
       data,
     });
