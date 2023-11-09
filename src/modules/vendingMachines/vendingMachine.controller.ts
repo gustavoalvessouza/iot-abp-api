@@ -4,6 +4,7 @@ import {
   CreateVendingMachineDTO,
   DeleteVendingMachineDTO,
   FindAllVendingMachineDTO,
+  FindProductsVendingMachineDTO,
   UpdateVendingMachineDTO,
 } from './dto';
 
@@ -12,6 +13,7 @@ import {
   CreateVendingMachineUseCase,
   DeleteVendingMachineUseCase,
   FindAllVendingMachineUseCase,
+  FindProductsVendingMachineUseCase,
 } from './use-case';
 
 @Controller('vending-machines')
@@ -24,6 +26,8 @@ export class VendingMachineController {
   @Inject(FindAllVendingMachineUseCase) private findAllUseCase: FindAllVendingMachineUseCase;
 
   @Inject(DeleteVendingMachineUseCase) private deleteUseCase: DeleteVendingMachineUseCase;
+
+  @Inject(FindProductsVendingMachineUseCase) private findProductsUseCase: FindProductsVendingMachineUseCase;
   //#endregion
 
   @Post()
@@ -44,5 +48,10 @@ export class VendingMachineController {
   @Delete(':id')
   async delete(@Param() params: DeleteVendingMachineDTO) {
     return await this.deleteUseCase.execute(params);
+  }
+
+  @Get('/:id/products')
+  async findProducts(@Param() params: FindProductsVendingMachineDTO) {
+    return await this.findProductsUseCase.execute(params);
   }
 }
