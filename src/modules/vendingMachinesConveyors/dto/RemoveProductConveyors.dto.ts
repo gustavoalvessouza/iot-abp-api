@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class DeleteVendingMachineConveyorsDTO {
+export class RemoveProductConveyorsDTO {
   @IsString()
   @IsNotEmpty()
   id: string;

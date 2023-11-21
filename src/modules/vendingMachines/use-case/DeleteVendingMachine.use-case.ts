@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { VendingMachineRepository } from 'src/repositories';
 
-import { HandleErrors } from 'src/utils/HandleErrors';
+import { HandleErrors } from 'src/utils/handleErrors';
 import { DeleteVendingMachineDTO } from '../dto';
 
 @Injectable()

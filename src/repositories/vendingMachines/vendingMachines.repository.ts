@@ -5,6 +5,7 @@ import {
   FindAllVendingMachineDTO,
   UpdateVendingMachineDTO,
   DeleteVendingMachineDTO,
+  FindProductsVendingMachineDTO,
 } from 'src/modules/vendingMachines/dto';
 
 @Injectable()
@@ -62,6 +63,35 @@ export class VendingMachineRepository {
     };
 
     return;
+  }
+
+  async findProducts({ id }: FindProductsVendingMachineDTO) {
+    return this.prisma.vendingMachines.findFirst({
+      select: {
+        id: true,
+        name: true,
+        location: true,
+        conveyors: {
+          select: {
+            id: true,
+            espIp: true,
+            amount: true,
+            product: {
+              select: {
+                id: true,
+                image: true,
+                name: true,
+                price: true,
+                description: true,
+              },
+            },
+          },
+        },
+      },
+      where: {
+        id,
+      },
+    });
   }
 
   async deleteById({ id }: DeleteVendingMachineDTO) {

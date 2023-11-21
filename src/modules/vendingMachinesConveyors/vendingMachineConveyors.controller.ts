@@ -1,39 +1,58 @@
 import { Controller, Inject, Put, Body, Post, Delete, Param } from '@nestjs/common';
 
 import {
-  CreateVendingMachineConveyorsDTO,
-  DeleteVendingMachineConveyorsDTO,
-  UpdateVendingMachineConveyorsDTO,
+  AddProductConveyorsDTO,
+  CreateConveyorsDTO,
+  DeleteConveyorsDTO,
+  RemoveProductConveyorsDTO,
+  UpdateConveyorsDTO,
 } from './dto';
 
 import {
-  UpdateVendingMachineConveyorsUseCase,
-  CreateVendingMachineConveyorsUseCase,
-  DeleteVendingMachineConveyorsUseCase,
+  CreateConveyorsUseCase,
+  UpdateConveyorsUseCase,
+  DeleteConveyorsUseCase,
+  AddProductUseCase,
+  RemoveProductUseCase,
 } from './use-case';
 
-@Controller('vending-machine-conveyors')
-export class VendingMachineController {
+@Controller('conveyors')
+export class VendingMachineConveyorsController {
   //#region DEPENDENCIES
-  @Inject(CreateVendingMachineConveyorsUseCase) private createUseCase: CreateVendingMachineConveyorsUseCase;
+  @Inject(CreateConveyorsUseCase) private createUseCase: CreateConveyorsUseCase;
 
-  @Inject(UpdateVendingMachineConveyorsUseCase) private updateUseCase: UpdateVendingMachineConveyorsUseCase;
+  @Inject(UpdateConveyorsUseCase) private updateUseCase: UpdateConveyorsUseCase;
 
-  @Inject(DeleteVendingMachineConveyorsUseCase) private deleteUseCase: DeleteVendingMachineConveyorsUseCase;
+  @Inject(DeleteConveyorsUseCase) private deleteUseCase: DeleteConveyorsUseCase;
+
+  @Inject(AddProductUseCase)
+  private addProductUseCase: AddProductUseCase;
+
+  @Inject(RemoveProductUseCase) private removeProductUseCase: RemoveProductUseCase;
+
   //#endregion
 
   @Post()
-  async create(@Body() body: CreateVendingMachineConveyorsDTO) {
+  async create(@Body() body: CreateConveyorsDTO) {
     return this.createUseCase.execute(body);
   }
 
   @Put()
-  async update(@Body() body: UpdateVendingMachineConveyorsDTO) {
+  async update(@Body() body: UpdateConveyorsDTO) {
     return await this.updateUseCase.execute(body);
   }
 
+  @Put('/add-product')
+  async addProduct(@Body() body: AddProductConveyorsDTO) {
+    return await this.addProductUseCase.execute(body);
+  }
+  @Put('/remove-product/:id')
+  async removeProduct(@Param() param: RemoveProductConveyorsDTO) {
+    return await this.removeProductUseCase.execute(param);
+  }
+
   @Delete(':id')
-  async delete(@Param() params: DeleteVendingMachineConveyorsDTO) {
+  async delete(@Param() params: DeleteConveyorsDTO) {
     return await this.deleteUseCase.execute(params);
   }
 }
