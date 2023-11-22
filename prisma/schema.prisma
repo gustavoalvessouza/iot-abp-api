@@ -34,7 +34,8 @@ model vendingMachinesConveyors {
 
   vendingMachine vendingMachines @relation(fields: [vendingMachineId], references: [id], onDelete: Cascade)
 
-  product products? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   products?   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  shoppings shoppings[]
 }
 
 //#endregion
@@ -68,6 +69,20 @@ model productSalesHistory {
 
   products        products?        @relation(fields: [productId], references: [id], onDelete: Cascade)
   vendingMachines vendingMachines? @relation(fields: [vendingMachineId], references: [id], onDelete: Cascade)
+}
+
+//#endregion
+
+//#region REQUESTS
+model shoppings {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  conveyorId  String  @db.ObjectId
+  isProcessed Boolean @default(false)
+
+  updatedAt                DateTime                 @updatedAt
+  createdAt                DateTime                 @default(now())
+  vendingMachinesConveyors vendingMachinesConveyors @relation(fields: [conveyorId], references: [id], onDelete: Cascade)
 }
 
 //#endregion

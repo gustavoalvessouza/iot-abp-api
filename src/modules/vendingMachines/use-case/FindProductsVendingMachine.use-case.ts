@@ -32,8 +32,8 @@ export class FindProductsVendingMachineUseCase {
   private async findProducts({ id }: FindProductsVendingMachineDTO) {
     const vendingMachineProducts = await this.repository.findProducts({ id });
 
-    const products = vendingMachineProducts.conveyors.map(({ product, amount }) => ({
-      id: product.id,
+    const products = vendingMachineProducts.conveyors.map(({ product, amount, id }) => ({
+      conveyorId: id,
       name: product.name,
       price: this.masks.BRL(String(product.price)),
       amount,
