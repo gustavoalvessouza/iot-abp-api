@@ -25,7 +25,28 @@ export class PaymentService {
       return { data };
     } catch (err) {
       return {
-        error: err,
+        error: true,
+        message: err.mesage,
+      };
+    }
+  }
+
+  async status({ paymentId }: { paymentId: string }): Promise<any> {
+    try {
+      const headers = {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+      };
+
+      const { data } = await axios.get(`${process.env.MERCADO_PAGO_PAYMENT_URL}/${this.API_ROUTE}/${paymentId}`, {
+        headers,
+      });
+
+      return data;
+    } catch (err) {
+      return {
+        error: true,
         message: err.mesage,
       };
     }
