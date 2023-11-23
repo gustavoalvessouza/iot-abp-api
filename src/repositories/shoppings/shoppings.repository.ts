@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
 import { RegisterShoppingDTO } from 'src/modules/shopping/dto';
+import { CheckHasShoppingDTO } from 'src/modules/shopping/dto/CheckHasShopping.dto';
 
 @Injectable()
 export class ShoppingRepository {
@@ -11,6 +12,20 @@ export class ShoppingRepository {
   async register({ data }: { data: RegisterShoppingDTO }) {
     return this.prisma.shoppings.create({
       data,
+    });
+  }
+
+  async checkHasShopping({ machineId }: CheckHasShoppingDTO) {
+    return this.prisma.shoppings.findFirst({
+      select: {
+        conveyorId: true,
+        isProcessed: true,
+      },
+      where: {
+        vendingMachinesConveyors: {
+          vendingMachineId: machineId,
+        },
+      },
     });
   }
 }
