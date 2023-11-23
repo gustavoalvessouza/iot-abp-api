@@ -15,16 +15,26 @@ export class ShoppingRepository {
     });
   }
 
-  async checkHasShopping({ machineId }: CheckHasShoppingDTO) {
+  async checkHasShopping({ conveyorId }: CheckHasShoppingDTO) {
     return this.prisma.shoppings.findFirst({
       select: {
         conveyorId: true,
         isProcessed: true,
       },
       where: {
-        vendingMachinesConveyors: {
-          vendingMachineId: machineId,
-        },
+        isProcessed: false,
+        conveyorId,
+      },
+    });
+  }
+
+  async markHasProcessed(id: string) {
+    return this.prisma.shoppings.update({
+      data: {
+        isProcessed: true,
+      },
+      where: {
+        id,
       },
     });
   }

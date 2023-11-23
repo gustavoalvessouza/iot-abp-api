@@ -18,9 +18,8 @@ export class productController {
     return this.registerShoppingUseCase.execute({ data: body });
   }
 
-  @Get(':machineId')
+  @Get(':conveyorId')
   async checkHasShopping(@Param() param: CheckHasShoppingDTO) {
-    console.log(param);
     return this.checkHasShoppingUseCase.execute(param);
   }
 }
