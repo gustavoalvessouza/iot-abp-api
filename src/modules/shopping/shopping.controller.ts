@@ -14,7 +14,6 @@ export class productController {
 
   @Post()
   async register(@Body() body: RegisterShoppingDTO) {
-    console.log(body);
     return this.registerShoppingUseCase.execute({ data: body });
   }
 

@@ -42,7 +42,7 @@ export class CheckHasShoppingUseCase {
 
     if (shopping) {
       hasShopping = true;
-      await this.repository.markHasProcessed(shopping.conveyorId);
+      await this.repository.markHasProcessed(shopping.id);
     }
 
     return {
