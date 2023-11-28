@@ -29,6 +29,19 @@ export class VendingMachineConveyorsRepository {
     });
   }
 
+  async decrementStock({ id }: { id: string }) {
+    const stock = await this.findById(id);
+
+    return this.prisma.vendingMachinesConveyors.update({
+      data: {
+        amount: stock.amount - 1,
+      },
+      where: {
+        id,
+      },
+    });
+  }
+
   async addProduct({ id, data }: AddProductConveyorsDTO) {
     return this.prisma.vendingMachinesConveyors.update({
       data,

@@ -32,9 +32,8 @@ export class FindProductsVendingMachineUseCase {
   private async findProducts({ id }: FindProductsVendingMachineDTO) {
     const vendingMachineProducts = await this.repository.findProducts({ id });
 
-    const products = vendingMachineProducts.conveyors.map(({ id, product, amount }) => ({
+    const products = vendingMachineProducts.conveyors.map(({ product, amount, id }) => ({
       conveyorId: id,
-
       name: product.name,
       image: product.image,
       description: product.description,
