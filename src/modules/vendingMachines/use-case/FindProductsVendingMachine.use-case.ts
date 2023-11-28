@@ -35,6 +35,8 @@ export class FindProductsVendingMachineUseCase {
     const products = vendingMachineProducts.conveyors.map(({ product, amount, id }) => ({
       conveyorId: id,
       name: product.name,
+      image: product.image,
+      description: product.description,
       price: this.masks.BRL(String(product.price)),
       amount,
     }));
