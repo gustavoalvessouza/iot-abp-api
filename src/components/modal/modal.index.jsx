@@ -80,7 +80,7 @@ const Modal = ({ isOpen, onClose, children, item }) => {
     }
   }
 
-  async function getPaymentStatus(id) {
+async function getPaymentStatus(id) {
     try {
       const response = await api.get(`payments/${id}`);
       if (response.data.status === "approved") {
@@ -114,7 +114,6 @@ const Modal = ({ isOpen, onClose, children, item }) => {
           alt="QR Code"
           style={{ width: 250 }}
         />
-        R$ {data.transaction_amount}
       </div>
     );
   };
