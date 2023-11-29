@@ -46,7 +46,6 @@ export const S = {
       width: 220px;
       object-fit: cover;
       border-radius: 10px;
-      border: 1px solid #b3b3b3;
     }
   `,
 

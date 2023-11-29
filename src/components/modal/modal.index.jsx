@@ -50,16 +50,13 @@ const Modal = ({ isOpen, onClose, children, item }) => {
     const finalPrice = parseFloat(b.trim());
 
     try {
-      const response = await axios.post(
-        "https://iot-abp-api-production.up.railway.app/payments/pix",
-        {
-          transaction_amount: 0.01,
-          payment_method_id: "pix",
-          payer: {
-            email: "gustavo-gustavo20@hotmail.com",
-          },
-        }
-      );
+      const response = await api.post("payments/pix", {
+        transaction_amount: 0.01,
+        payment_method_id: "pix",
+        payer: {
+          email: "gustavo-gustavo20@hotmail.com",
+        },
+      });
       setData(response.data.data);
       setPaymentid(data.id);
       setQrCode(
@@ -73,15 +70,11 @@ const Modal = ({ isOpen, onClose, children, item }) => {
     }
   }
 
-  
   async function postConveyor() {
     try {
-      const response = await axios.post(
-        `https://iot-abp-api-production.up.railway.app/shoppings/`,
-        {
-          conveyorId: esteiraId,
-        }
-      );
+      const response = await api.post("shoppings/", {
+        conveyorId: esteiraId,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -89,11 +82,9 @@ const Modal = ({ isOpen, onClose, children, item }) => {
 
   async function getPaymentStatus(id) {
     try {
-      const response = await axios.get(
-        `https://iot-abp-api-production.up.railway.app/payments/${id}`
-      );
+      const response = await api.get(`payments/${id}`);
       if (response.data.status === "approved") {
-        alert("Payment approved!");
+        alert("Pagamento Aprovado!");
         postConveyor();
         onClose();
         setPix(false);
