@@ -26,15 +26,21 @@ export class RegisterShoppingUseCase {
   //#region IMPLEMENATION
 
   private async checkConveyorExists({ data }: { data: RegisterShoppingDTO }) {
-    const machine = await this.conveyorsRepository.findById(data.conveyorId);
+    const conveyor = await this.conveyorsRepository.findById(data.conveyorId);
 
-    if (!machine) this.error.add('Conveyor not found');
+    if (!conveyor) this.error.add('Conveyor not found');
+
+    if (conveyor.amount - 1 === 0) {
+      this.error.add('Product is not in stock');
+    }
   }
 
   private async registerShopping({ data }: { data: RegisterShoppingDTO }) {
     const product = await this.repository.register({
       data,
     });
+
+    await this.conveyorsRepository.decrementStock({ id: data.conveyorId });
 
     return {
       product,

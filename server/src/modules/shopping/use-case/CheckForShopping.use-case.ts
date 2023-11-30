@@ -17,28 +17,36 @@ export class CheckHasShoppingUseCase {
   @Inject(HandleErrors) private error: HandleErrors;
   //#endregion
 
-  async execute({ machineId }: CheckHasShoppingDTO) {
-    await this.checkMachineExists({ machineId });
+  async execute({ conveyorId }: CheckHasShoppingDTO) {
+    await this.checkMachineConveyorExists({ conveyorId });
 
     this.error.checkErrors();
 
-    return this.checkHasShopping({ machineId });
+    return this.checkHasShopping({ conveyorId });
   }
 
   //#region IMPLEMENATION
 
-  private async checkMachineExists({ machineId }: CheckHasShoppingDTO) {
-    const machine = await this.vendingMachineRepository.findById(machineId);
+  private async checkMachineConveyorExists({ conveyorId }: CheckHasShoppingDTO) {
+    const machine = await this.conveyorsRepository.findById(conveyorId);
 
-    if (!machine) this.error.add('Vending machine not found');
+    if (!machine) this.error.add('Vending machine conveyor not found');
   }
-  private async checkHasShopping({ machineId }: CheckHasShoppingDTO) {
-    const shoppings = await this.repository.checkHasShopping({
-      machineId,
+
+  private async checkHasShopping({ conveyorId }: CheckHasShoppingDTO) {
+    const shopping = await this.repository.checkHasShopping({
+      conveyorId,
     });
 
+    let hasShopping = false;
+
+    if (shopping) {
+      hasShopping = true;
+      await this.repository.markHasProcessed(shopping.id);
+    }
+
     return {
-      response: !!shoppings,
+      response: hasShopping,
     };
   }
   //#endregion

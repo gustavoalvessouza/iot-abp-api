@@ -1,5 +1,5 @@
 # iot-abp-api
-API para gerenciamento de requisições vindas de um ESP 32.
+API para gerenciamento de pagamentos e dados dos produtos vindos de esteiras conectadas a um ESP32.
 Trabalho final da disciplina de Iot Aplicada da SATC.
 
 ## Instalação
